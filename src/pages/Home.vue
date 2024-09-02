@@ -20,13 +20,13 @@
 
 <script lang="ts" setup>
 import { computed, onMounted, watch } from 'vue';
-import { useCurrency } from '@/services/api/useCurrency.ts';
+import { useCurrency } from '@/services/api/useCurrency';
 
 const { exchangeRates, baseCurrency, fetchCurrencyRates } = useCurrency();
 const currencies = ['USD', 'EUR', 'RUB'];
 
 // Объект символов валют для быстрого доступа
-const currencySymbols = {
+const currencySymbols: { [key: string]: string } = {
   USD: '$',
   EUR: '€',
   RUB: '₽',
@@ -35,13 +35,12 @@ const currencySymbols = {
 // Реактивные данные для отображения курсов валют
 const exchangeData = computed(() => {
   const rates = exchangeRates.value;
-  const base = baseCurrency.value;
+  const base = baseCurrency.value as 'USD' | 'EUR' | 'RUB';
 
   if (!rates || !rates[base]) {
     return [];
   }
 
-  // Вычисляем курс каждой валюты по отношению к базовой валюте
   const baseRate = rates[base];
   return currencies
       .filter((currency) => currency !== base)

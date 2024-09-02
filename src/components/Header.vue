@@ -41,7 +41,7 @@
 <script lang="ts" setup>
 import { computed, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { useCurrency } from '@/services/api/useCurrency.ts';
+import { useCurrency } from '@/services/api/useCurrency';
 
 const router = useRouter();
 const route = useRoute();

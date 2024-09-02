@@ -66,7 +66,7 @@
 
 <script lang="ts" setup>
 import { ref, computed, watch } from 'vue';
-import { useCurrency } from '@/services/api/useCurrency.ts';
+import { useCurrency } from '@/services/api/useCurrency';
 
 const { getExchangeRate, fetchCurrencyRates } = useCurrency();
 const fromCurrency = ref('USD');
