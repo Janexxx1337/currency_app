@@ -1,0 +1,56 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Production build directory
+dist/
+build/
+
+# Cache directories
+.cache/
+.temp/
+
+# TypeScript output
+*.tsbuildinfo
+
+# IDE and editor files
+.vscode/
+.idea/
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Optional npm cache directory
+.npm/
+
+# Optional eslint cache
+.eslintcache
+
+# Optional Stylelint cache
+.stylelintcache
+
+# Test output
+coverage/
+junit.xml
+test-results.xml
+
+# Environment files
+.env
+.env.*.local
+
+# Vue specific
+public/
+*.local
+
+# MacOS files
+Thumbs.db
+*.swp
