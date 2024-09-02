@@ -13,8 +13,14 @@
     </el-row>
     <el-row :gutter="20" class="mt-3">
       <el-col :span="12">
+        <!-- Фильтрация списка валют для исключения выбранной в fromCurrency -->
         <el-select v-model="toCurrency" @change="convertCurrency" placeholder="Выберите валюту">
-          <el-option v-for="currency in currencies" :key="currency" :label="currency" :value="currency" />
+          <el-option
+              v-for="currency in filteredToCurrencies"
+              :key="currency"
+              :label="currency"
+              :value="currency"
+          />
         </el-select>
       </el-col>
       <el-col :span="12">
@@ -25,7 +31,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useCurrency } from '@/services/api/useCurrency.ts';
 
 const { getExchangeRate, fetchCurrencyRates } = useCurrency();
@@ -34,6 +40,11 @@ const toCurrency = ref('RUB');
 const fromAmount = ref(0);
 const toAmount = ref(0);
 const currencies = ['USD', 'EUR', 'RUB'];
+
+// Фильтруем список валют для второго селектора, исключая выбранную валюту в первом селекторе
+const filteredToCurrencies = computed(() => {
+  return currencies.filter(currency => currency !== fromCurrency.value);
+});
 
 // Функция конвертации
 const convertCurrency = () => {

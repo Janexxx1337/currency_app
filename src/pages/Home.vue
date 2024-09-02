@@ -16,18 +16,27 @@ import { useCurrency } from '@/services/api/useCurrency.ts';
 const { exchangeRates, baseCurrency, fetchCurrencyRates } = useCurrency();
 const currencies = ['USD', 'EUR', 'RUB'];
 
-// Реактивный заголовок страницы
+// Реактивные данные для отображения курсов валют
 const exchangeData = computed(() => {
   if (!exchangeRates.value || Object.keys(exchangeRates.value).length === 0) {
     return [];
   }
 
+  // Вычисляем курс каждой валюты по отношению к базовой валюте
   return currencies
       .filter((currency) => currency !== baseCurrency.value)
-      .map((currency) => ({
-        currency,
-        rate: (exchangeRates.value[currency] / exchangeRates.value[baseCurrency.value]).toFixed(2),
-      }));
+      .map((currency) => {
+        const rate = exchangeRates.value[currency];
+        const baseRate = exchangeRates.value[baseCurrency.value];
+
+        // Рассчитываем правильный курс валюты относительно базовой валюты
+        const calculatedRate = (baseRate / rate).toFixed(2);
+
+        return {
+          currency,
+          rate: calculatedRate,
+        };
+      });
 });
 
 onMounted(() => {
