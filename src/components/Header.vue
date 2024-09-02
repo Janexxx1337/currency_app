@@ -1,25 +1,45 @@
 <template>
   <el-header>
     <el-row justify="space-between" align="middle" class="header-content">
-      <el-tabs v-model="activePage" @tab-click="handleTabClick">
-        <el-tab-pane label="Главная" name="home">
-          <router-link to="/" class="tab-link">Главная</router-link>
-        </el-tab-pane>
-        <el-tab-pane label="Конвертация" name="convert">
-          <router-link to="/convert" class="tab-link">Конвертация</router-link>
-        </el-tab-pane>
-      </el-tabs>
+      <!-- Навигация с использованием меню -->
+      <el-menu :default-active="activePage" class="el-menu" mode="horizontal" @select="handleMenuSelect">
+        <el-menu-item index="home">
+          <router-link to="/" class="menu-link">Главная</router-link>
+        </el-menu-item>
+        <el-menu-item index="convert">
+          <router-link to="/convert" class="menu-link">Конвертация</router-link>
+        </el-menu-item>
+      </el-menu>
 
       <!-- Выбор основной валюты -->
-      <el-select v-model="baseCurrency" @change="onCurrencyChange" placeholder="Выберите валюту">
-        <el-option v-for="currency in currencies" :key="currency" :label="currency" :value="currency" />
-      </el-select>
+      <div class="currency-select-container">
+        <el-tooltip content="Выберите основную валюту" placement="bottom">
+          <el-select
+              v-model="baseCurrency"
+              placeholder="Выберите валюту"
+              size="large"
+              class="currency-select"
+              clearable
+          >
+            <el-option
+                v-for="currency in currencies"
+                :key="currency"
+                :label="currency"
+                :value="currency"
+            >
+              <span>
+                {{ currency }} {{ getCurrencySymbol(currency) }}
+              </span>
+            </el-option>
+          </el-select>
+        </el-tooltip>
+      </div>
     </el-row>
   </el-header>
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useCurrency } from '@/services/api/useCurrency.ts';
 
@@ -28,28 +48,32 @@ const route = useRoute();
 const { baseCurrency, fetchCurrencyRates } = useCurrency();
 const currencies = ['USD', 'EUR', 'RUB'];
 
-// Определяем активную страницу для табов
-const activePage = ref(route.name ? route.name.toString() : 'home');
+// Определяем активную страницу для меню
+const activePage = computed(() => route.name ? route.name.toString() : 'home');
 
-// Обработчик переключения табов
-const handleTabClick = (tab) => {
-  router.push({ name: tab.paneName });
+// Обработчик переключения пунктов меню
+const handleMenuSelect = (index: string) => {
+  router.push({ name: index });
 };
 
-// Обработчик изменения основной валюты
-const onCurrencyChange = () => {
+// Функция для получения символа валюты
+const getCurrencySymbol = (currency: string): string => {
+  switch (currency) {
+    case 'USD':
+      return '$'; // Символ доллара
+    case 'EUR':
+      return '€'; // Символ евро
+    case 'RUB':
+      return '₽'; // Символ рубля
+    default:
+      return '';
+  }
+};
+
+// Следим за изменением базовой валюты и обновляем курсы
+watch(baseCurrency, () => {
   fetchCurrencyRates();
-};
-
-// Следим за изменением маршрута для обновления активного таба
-watch(
-    () => route.name,
-    (newRoute) => {
-      activePage.value = newRoute ? newRoute.toString() : 'home';
-    }
-);
-
-fetchCurrencyRates();
+});
 </script>
 
 <style scoped>
@@ -58,15 +82,23 @@ fetchCurrencyRates();
   align-items: center;
 }
 
-.site-title {
-  margin: 0;
-}
-
-.tab-link {
-  display: none; /* Скрыть ссылки для корректного отображения вкладок */
-}
-
-.el-tabs {
+.el-menu {
   margin-right: auto;
+  flex-grow: 1;
+}
+
+.menu-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.currency-select-container {
+  display: flex;
+  align-items: center;
+}
+
+.currency-select {
+  width: 200px;
+  margin-left: 20px;
 }
 </style>

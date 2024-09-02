@@ -1,0 +1,21 @@
+.currency-card {
+    padding: 20px;
+    margin-top: 20px;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.title {
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.currency-table {
+    margin-top: 20px;
+    font-size: 20px;
+}
