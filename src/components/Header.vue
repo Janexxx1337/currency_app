@@ -39,7 +39,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch } from 'vue';
+import { computed, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useCurrency } from '@/services/api/useCurrency.ts';
 
@@ -77,28 +77,5 @@ watch(baseCurrency, () => {
 </script>
 
 <style scoped>
-.header-content {
-  padding: 0 20px;
-  align-items: center;
-}
-
-.el-menu {
-  margin-right: auto;
-  flex-grow: 1;
-}
-
-.menu-link {
-  text-decoration: none;
-  color: inherit;
-}
-
-.currency-select-container {
-  display: flex;
-  align-items: center;
-}
-
-.currency-select {
-  width: 200px;
-  margin-left: 20px;
-}
+@import '@/styles/modules/components/header.css';
 </style>

@@ -1,0 +1,24 @@
+.header-content {
+    padding: 0 20px;
+    align-items: center;
+}
+
+.el-menu {
+    margin-right: auto;
+    flex-grow: 1;
+}
+
+.menu-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.currency-select-container {
+    display: flex;
+    align-items: center;
+}
+
+.currency-select {
+    width: 200px;
+    margin-left: 20px;
+}
